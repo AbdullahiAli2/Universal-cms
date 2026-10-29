@@ -1,3 +1,4 @@
+
 # Python
 server/.venv/
 server/__pycache__/
@@ -5,12 +6,30 @@ server/__pycache__/
 *.pyc
 server/data/
 server/staticfiles/
-# Node
+.pytest_cache/
+*.sqlite3
+
+# Node.js / Next.js
 app/node_modules/
 app/.next/
-# Environment
+node_modules/
+.next/
+*.tsbuildinfo
+
+# Environment and secrets
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
 # Editors and OS
 .DS_Store
 .idea/
 .vscode/
+Thumbs.db
