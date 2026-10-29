@@ -1,0 +1,16 @@
+# Python
+server/.venv/
+server/__pycache__/
+**/__pycache__/
+*.pyc
+server/data/
+server/staticfiles/
+# Node
+app/node_modules/
+app/.next/
+# Environment
+.env
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,52 @@
+# Local and self-hosted deployment: PostgreSQL, the Django API and the Next.js dashboard.
+# Usage: cp .env.example .env, edit the secrets, then run: docker compose up --build
+name: universal-cms
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-universal_cms}
+      POSTGRES_USER: ${POSTGRES_USER:-universal_cms}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  server:
+    build: ./server
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      CMS_DATABASE: postgres
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+      CMS_MEDIA_ROOT: /app/data/media
+    volumes:
+      # Uploaded files. Kept across rebuilds, like the database volume.
+      - media:/app/data/media
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  app:
+    build: ./app
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      CMS_API_URL: http://server:8000/api/v1
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
+  media:

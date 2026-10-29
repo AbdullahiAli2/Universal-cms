@@ -1,0 +1,26 @@
+[project]
+name = "universal-cms-server"
+version = "0.1.0"
+description = "Universal CMS: headless content API built with Django and Django REST Framework"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+dependencies = [
+    "django>=5.2,<6.0",
+    "djangorestframework>=3.15,<4",
+    "django-filter>=24.3,<26",
+    "drf-spectacular>=0.28,<1",
+    "psycopg[binary]>=3.2,<4",
+    "whitenoise>=6.8,<7",
+    "gunicorn>=23,<24",
+    "pillow>=11,<13",
+    "dnspython>=2.7,<3",
+    "cryptography>=44,<47",
+    "user-agents>=2.2,<3",
+]
+
+[project.optional-dependencies]
+# Optional MySQL support. Requires the MySQL client headers on the build machine.
+mysql = ["mysqlclient>=2.2,<3"]
+
+[tool.uv]
+package = false
